@@ -1,0 +1,8 @@
+@import "tailwindcss";
+
+:root {
+}
+
+@theme inline {
+  --font-sans: var(--font-sans);
+}
