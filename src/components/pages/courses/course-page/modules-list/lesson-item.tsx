@@ -1,18 +1,57 @@
+import {
+  markLessonAsCompleted,
+  unmarkLessonAsCompleted,
+} from "@/actions/course-progress";
 import { Tooltip } from "@/components/ui/tooltip";
+import { queryKeys } from "@/constants/query-keys";
 import { cn, formatDuration } from "@/lib/utils";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { CircleCheckBig, CircleX, Video } from "lucide-react";
 import Link from "next/link";
+import { useParams } from "next/navigation";
 
 type LessonItemProps = {
-  lesson: CourseLesson;
+  lesson: CourseLesson & {
+    completed: boolean;
+  };
 };
 
 export const LessonItem = ({ lesson }: LessonItemProps) => {
+  const params = useParams();
+  const queryClient = useQueryClient();
+
+  const courseSlug = params.slug as string;
+  const lessonId = lesson.id;
+  const completed = lesson.completed;
+
   const currentLessonId = "cm9yrqe7e003q185k95g7qh0j";
-  const completed = false;
 
   const PrimaryIcon = completed ? CircleCheckBig : Video;
   const SecondaryIcon = completed ? CircleX : CircleCheckBig;
+
+  const { mutate: handleCompleteLesson, isPending: isCompletingLesson } =
+    useMutation({
+      mutationFn: () => markLessonAsCompleted({ lessonId, courseSlug }),
+      onSuccess: () => {
+        queryClient.invalidateQueries({
+          queryKey: queryKeys.courseProgress(courseSlug),
+        });
+      },
+    });
+
+  const {
+    mutate: handleUnmarkLessonAsCompleted,
+    isPending: isUnmarkingLessonAsCompleted,
+  } = useMutation({
+    mutationFn: () => unmarkLessonAsCompleted(lessonId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.courseProgress(courseSlug),
+      });
+    },
+  });
+
+  const isLoading = isCompletingLesson || isUnmarkingLessonAsCompleted;
 
   return (
     <Link
@@ -30,7 +69,19 @@ export const LessonItem = ({ lesson }: LessonItemProps) => {
       >
         <button
           type="button"
-          className="w-4 min-w-4 h-4 relative group/lesson-button"
+          className="w-4 min-w-4 h-4 relative group/lesson-button disabled:opacity-50 disabled:cursor-not-allowed"
+          disabled={isLoading}
+          onClick={(event) => {
+            event.preventDefault();
+            event.stopPropagation();
+
+            if (completed) {
+              handleUnmarkLessonAsCompleted();
+              return;
+            }
+
+            handleCompleteLesson();
+          }}
         >
           <PrimaryIcon className="w-full h-full opacity-100 transition-all group-hover/lesson-button:opacity-0" />
           <SecondaryIcon className="absolute inset-0 w-full h-full opacity-0 transition-all group-hover/lesson-button:opacity-100" />
