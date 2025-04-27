@@ -11,8 +11,6 @@ export const getCourses = async ({
   query,
   tags: rawTags,
 }: GetCoursesPayload) => {
-  await new Promise((resolve) => setTimeout(resolve, 2000));
-
   const tags = !rawTags ? [] : Array.isArray(rawTags) ? rawTags : [rawTags];
 
   const hasTags = !!tags.length;
