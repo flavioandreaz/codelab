@@ -9,6 +9,7 @@ import { ArrowRight, CreditCard } from "lucide-react";
 import { useState } from "react";
 import PixIcon from "@/assets/pix.svg";
 import { CreditCardForm } from "./credit-card";
+import { PixForm } from "./pix";
 
 type CheckoutDialogProps = {
   open: boolean;
@@ -43,6 +44,10 @@ export const CheckoutDialog = ({
     // TODO: validar se já esta logado
 
     setStep(2);
+  };
+
+  const handleBack = () => {
+    setStep(1);
   };
 
   return (
@@ -84,10 +89,12 @@ export const CheckoutDialog = ({
           )}
 
           {step === 2 && paymentMethod === "CREDIT_CARD" && (
-            <CreditCardForm onBack={() => setStep(1)} />
+            <CreditCardForm onBack={handleBack} />
           )}
 
-          {step === 2 && paymentMethod === "PIX" && <>{/* PixForm */}</>}
+          {step === 2 && paymentMethod === "PIX" && (
+            <PixForm onBack={handleBack} />
+          )}
         </div>
       }
     />
