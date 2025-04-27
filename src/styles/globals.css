@@ -89,6 +89,10 @@
   button {
     @apply cursor-pointer;
   }
+
+  .scroll-hidden::-webkit-scrollbar {
+    @apply hidden;
+  }
 }
 
 .dark {
