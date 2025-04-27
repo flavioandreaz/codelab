@@ -12,6 +12,7 @@ import { createLessonComment } from "@/actions/course-comments";
 import { queryKeys } from "@/constants/query-keys";
 import { useParams } from "next/navigation";
 import { toast } from "sonner";
+import { cn } from "@/lib/utils";
 
 const formSchema = z.object({
   content: z
@@ -22,7 +23,21 @@ const formSchema = z.object({
 
 type FormData = z.infer<typeof formSchema>;
 
-export const CommentInput = () => {
+type CommentInputProps = {
+  parentCommentId?: string;
+  autoFocus?: boolean;
+  className?: string;
+  onCancel?: () => void;
+  onSuccess?: () => void;
+};
+
+export const CommentInput = ({
+  parentCommentId,
+  autoFocus,
+  className,
+  onCancel,
+  onSuccess,
+}: CommentInputProps) => {
   const params = useParams();
   const queryClient = useQueryClient();
 
@@ -46,7 +61,7 @@ export const CommentInput = () => {
       });
 
       reset();
-
+      if (onSuccess) onSuccess();
       toast.success("Comentário criado com sucesso");
     },
     onError: () => {
@@ -59,12 +74,15 @@ export const CommentInput = () => {
       courseSlug,
       lessonId,
       content: data.content,
-      parentId: undefined,
+      parentId: parentCommentId,
     });
   };
 
   return (
-    <form className="flex gap-4" onSubmit={handleSubmit(onSubmit)}>
+    <form
+      className={cn("flex gap-4", className)}
+      onSubmit={handleSubmit(onSubmit)}
+    >
       <Avatar src={user?.imageUrl} fallback={user?.fullName} />
 
       <Controller
@@ -75,13 +93,21 @@ export const CommentInput = () => {
             {...field}
             placeholder="Deixe seu comentário"
             className="min-h-[100px]"
+            autoFocus={autoFocus}
           />
         )}
       />
 
-      <Button type="submit" disabled={isPending}>
-        Comentar
-      </Button>
+      <div className="flex gap-2">
+        {onCancel && (
+          <Button variant="outline" onClick={onCancel}>
+            Cancelar
+          </Button>
+        )}
+        <Button type="submit" disabled={isPending}>
+          Comentar
+        </Button>
+      </div>
     </form>
   );
 };
