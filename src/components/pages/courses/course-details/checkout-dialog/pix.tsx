@@ -1,5 +1,6 @@
 "use client";
 
+import { createPixCheckout } from "@/actions/payment";
 import { Button } from "@/components/ui/button";
 import { FormField } from "@/components/ui/form/field";
 import { InputField } from "@/components/ui/form/input-field";
@@ -7,18 +8,21 @@ import { Form } from "@/components/ui/form/primitives";
 import { Input } from "@/components/ui/input";
 import { pixCheckoutFormSchema } from "@/server/schemas/payment";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation } from "@tanstack/react-query";
 import { ArrowLeft, ArrowRight, Check } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import { z } from "zod";
 
 type FormData = z.infer<typeof pixCheckoutFormSchema>;
 
 type PixFormProps = {
   onBack: () => void;
+  course: Course;
 };
 
-export const PixForm = ({ onBack }: PixFormProps) => {
+export const PixForm = ({ onBack, course }: PixFormProps) => {
   const [step, setStep] = useState(1);
 
   const form = useForm<FormData>({
@@ -33,8 +37,27 @@ export const PixForm = ({ onBack }: PixFormProps) => {
 
   const { handleSubmit } = form;
 
+  const { mutateAsync: handleCreateInvoice, isPending: isCreatingInvoice } =
+    useMutation({
+      mutationFn: createPixCheckout,
+      onSuccess: () => {
+        setStep(2);
+      },
+    });
+
   const onSubmit = (data: FormData) => {
-    console.log(data);
+    // TODO: validar o CEP
+
+    toast.promise(
+      handleCreateInvoice({
+        courseId: course.id,
+        cpf: data.cpf,
+        postalCode: data.postalCode,
+        name: data.name,
+        addressNumber: data.addressNumber,
+      }),
+      { loading: "Gerando QR Code..." }
+    );
   };
 
   const handleBack = () => {
@@ -84,7 +107,9 @@ export const PixForm = ({ onBack }: PixFormProps) => {
             </div>
           </div>
         ) : (
-          <div></div>
+          <div>
+            <p>QR CODE DO PIX</p>
+          </div>
         )}
 
         <div className="mt-6 flex items-center justify-between w-full flex-col md:flex-row gap-4 md:gap-0">
@@ -99,7 +124,11 @@ export const PixForm = ({ onBack }: PixFormProps) => {
           </Button>
 
           {step == 1 ? (
-            <Button type="submit" className="w-full md:w-max">
+            <Button
+              type="submit"
+              className="w-full md:w-max"
+              disabled={isCreatingInvoice}
+            >
               Continuar
               <ArrowRight />
             </Button>
