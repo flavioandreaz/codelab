@@ -8,13 +8,17 @@ import { formatPrice } from "@/lib/utils";
 import { useQuery } from "@tanstack/react-query";
 import { Play, ShoppingCart } from "lucide-react";
 import Link from "next/link";
+import { CheckoutDialog } from "./checkout-dialog";
+import { useState } from "react";
 
 type CourseProgressProps = {
   course: Course;
 };
 
 export const CourseProgress = ({ course }: CourseProgressProps) => {
-  const hasCourse = true;
+  const [showCheckoutDialog, setShowCheckoutDialog] = useState(false);
+
+  const hasCourse = false;
 
   const { data: courseProgress } = useQuery({
     queryKey: queryKeys.courseProgress(course.slug),
@@ -57,12 +61,21 @@ export const CourseProgress = ({ course }: CourseProgressProps) => {
             {formatPrice(course.discountPrice ?? course.price)}
           </p>
 
-          <Button className="w-full mt-2 text-xl font-bold h-auto text-white py-3">
+          <Button
+            className="w-full mt-2 text-xl font-bold h-auto text-white py-3"
+            onClick={() => setShowCheckoutDialog(true)}
+          >
             Comprar
             <ShoppingCart />
           </Button>
         </div>
       )}
+
+      <CheckoutDialog
+        open={showCheckoutDialog}
+        setOpen={setShowCheckoutDialog}
+        course={course}
+      />
     </aside>
   );
 };
