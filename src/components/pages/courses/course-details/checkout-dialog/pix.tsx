@@ -102,6 +102,16 @@ export const PixForm = ({ onBack, onClose, course }: PixFormProps) => {
         setInvoiceId(response.invoiceId);
         handleGetQrCode(response.invoiceId);
       },
+      onError: (error) => {
+        if (error?.name === "CONFLICT") {
+          toast.error("Você já possui acesso a este curso!");
+          onClose();
+          return;
+        }
+
+        toast.error("Erro ao gerar QR Code, tente novamente.");
+        onBack();
+      },
     });
 
   const onSubmit = async (data: FormData) => {

@@ -9,7 +9,8 @@ import { useQuery } from "@tanstack/react-query";
 import { Play, ShoppingCart } from "lucide-react";
 import Link from "next/link";
 import { CheckoutDialog } from "./checkout-dialog";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
 
 type CourseProgressProps = {
   course: Course;
@@ -17,6 +18,13 @@ type CourseProgressProps = {
 
 export const CourseProgress = ({ course }: CourseProgressProps) => {
   const [showCheckoutDialog, setShowCheckoutDialog] = useState(false);
+
+  const searchParams = useSearchParams();
+  const checkoutParam = searchParams.get("checkout");
+
+  useEffect(() => {
+    if (checkoutParam === "true") setShowCheckoutDialog(true);
+  }, [checkoutParam]);
 
   const hasCourse = false;
 

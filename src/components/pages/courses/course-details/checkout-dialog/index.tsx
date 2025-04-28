@@ -10,6 +10,9 @@ import { useState } from "react";
 import PixIcon from "@/assets/pix.svg";
 import { CreditCardForm } from "./credit-card";
 import { PixForm } from "./pix";
+import { useUser } from "@clerk/nextjs";
+import { toast } from "sonner";
+import { usePathname, useRouter } from "next/navigation";
 
 type CheckoutDialogProps = {
   open: boolean;
@@ -35,13 +38,23 @@ export const CheckoutDialog = ({
   setOpen,
   course,
 }: CheckoutDialogProps) => {
+  const { user } = useUser();
+
+  const pathname = usePathname();
+  const router = useRouter();
+
   const [step, setStep] = useState(1);
   const [paymentMethod, setPaymentMethod] = useState<"PIX" | "CREDIT_CARD">(
     "PIX"
   );
 
   const handleContinue = () => {
-    // TODO: validar se já esta logado
+    if (!user) {
+      toast.info("Faça login ou crie uma conta para prosseguir com a compra");
+
+      router.push(`/auth/sign-in?redirect_url=${pathname}?checkout=true`);
+      return;
+    }
 
     setStep(2);
   };
