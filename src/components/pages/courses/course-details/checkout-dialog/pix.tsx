@@ -26,12 +26,6 @@ import { z } from "zod";
 
 type FormData = z.infer<typeof pixCheckoutFormSchema>;
 
-export type PixResponse = {
-  encodedImage: string;
-  payload: string;
-  expirationDate: string;
-};
-
 type PixFormProps = {
   onBack: () => void;
   onClose: () => void;
