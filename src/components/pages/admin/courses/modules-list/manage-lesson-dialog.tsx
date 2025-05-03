@@ -7,87 +7,56 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, useFormContext } from "react-hook-form";
 import { z } from "zod";
 import { createId } from "@paralleldrive/cuid2";
-import { useEffect } from "react";
+import { FormField } from "@/components/ui/form/field";
+import { Editor } from "@/components/ui/editor";
 
 const formSchema = z.object({
   title: z.string().nonempty({ message: "Campo obrigatório" }),
   description: z.string().nonempty({ message: "Campo obrigatório" }),
+  videoId: z.string().nonempty({ message: "Campo obrigatório" }),
+  durationInMs: z.coerce.number().min(1, { message: "Campo obrigatório" }),
 });
 
-type ModuleFormData = z.infer<typeof formSchema>;
+type LessonFormData = z.infer<typeof formSchema>;
 
-export type ModuleFormItem = ModuleFormData & {
-  id: string;
-};
-
-type ManageModuleDialogProps = {
+type ManageLessonDialogProps = {
   open: boolean;
   setOpen: (open: boolean) => void;
-  initialData?: ModuleFormItem | null;
-  setInitialData: (data: ModuleFormItem | null) => void;
+  moduleIndex: number;
 };
 
-export const ManageModuleDialog = ({
+export const ManageLessonDialog = ({
   open,
   setOpen,
-  initialData,
-  setInitialData,
-}: ManageModuleDialogProps) => {
+  moduleIndex,
+}: ManageLessonDialogProps) => {
   const {
     getValues,
     setValue,
     reset: resetForm,
   } = useFormContext<CreateCourseFormData>();
 
-  const form = useForm<ModuleFormData>({
+  const form = useForm<LessonFormData>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       title: "",
       description: "",
+      videoId: "",
+      durationInMs: 0,
     },
   });
 
-  const { handleSubmit, reset } = form;
+  const { handleSubmit } = form;
 
-  const isEditing = !!initialData;
-
-  useEffect(() => {
-    if (open && initialData) {
-      reset(initialData);
-    }
-  }, [open, initialData, reset]);
-
-  useEffect(() => {
-    if (!open) {
-      reset({ title: "", description: "" });
-      setInitialData(null);
-    }
-  }, [open, reset, setInitialData]);
-
-  const onSubmit = (data: ModuleFormData) => {
+  const onSubmit = (data: LessonFormData) => {
     const modules = getValues("modules");
 
-    if (isEditing) {
-      const updatedModules = modules.map((mod) => {
-        if (mod.id === initialData.id) {
-          return { ...mod, ...data };
-        }
+    // TODO: edit lesson
 
-        return mod;
-      });
-
-      setValue("modules", updatedModules, { shouldValidate: true });
-      resetForm(getValues());
-
-      setOpen(false);
-      return;
-    }
-
-    modules.push({
+    modules[moduleIndex].lessons.push({
       ...data,
       id: createId(),
       order: 1,
-      lessons: [],
     });
 
     setValue("modules", modules, { shouldValidate: true });
@@ -98,10 +67,9 @@ export const ManageModuleDialog = ({
 
   return (
     <Dialog
-      title={isEditing ? "Editar Módulo" : "Adicionar Módulo"}
+      title="Adicionar Aula"
       open={open}
       setOpen={setOpen}
-      width="500px"
       content={
         <Form {...form}>
           <form
@@ -109,15 +77,24 @@ export const ManageModuleDialog = ({
             className="flex flex-col gap-6"
           >
             <InputField name="title" label="Título" />
-            <InputField
-              name="description"
-              label="Breve descrição sobre o módulo"
-            />
+            <FormField name="description" label="Descrição">
+              {({ field }) => (
+                <Editor value={field.value} onChange={field.onChange} />
+              )}
+            </FormField>
+            <div className="grid md:grid-cols-2 gap-6">
+              <InputField name="videoId" label="ID do vídeo" />
+              <InputField
+                name="durationInMs"
+                label="Duração em Milissegundos"
+                type="number"
+              />
+            </div>
             <Button
               className="max-w-max ml-auto"
               onClick={() => handleSubmit(onSubmit)()}
             >
-              {isEditing ? "Salvar" : "Adicionar"}
+              Adicionar
             </Button>
           </form>
         </Form>
