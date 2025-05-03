@@ -1,4 +1,4 @@
-import { CourseDifficulty } from "@/generated/prisma";
+import { CourseDifficulty, CourseStatus } from "@/generated/prisma";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 
@@ -44,6 +44,15 @@ export const formatName = (firstName: string, lastName?: string | null) => {
   if (!lastName) return firstName;
 
   return `${firstName} ${lastName}`;
+};
+
+export const formatStatus = (status: CourseStatus) => {
+  switch (status) {
+    case CourseStatus.DRAFT:
+      return "Rascunho";
+    case CourseStatus.PUBLISHED:
+      return "Publicado";
+  }
 };
 
 export const unMockValue = (value: string) => {
