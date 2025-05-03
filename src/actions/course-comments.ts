@@ -55,7 +55,16 @@ export const createLessonComment = async ({
     throw new Error("Curso não encontrado");
   }
 
-  // TODO: verificar se o usuário possui o curso
+  const userHasCourse = await prisma.coursePurchase.findFirst({
+    where: {
+      courseId: course.id,
+      userId,
+    },
+  });
+
+  if (!userHasCourse) {
+    throw new Error("Você não possui acesso a este curso");
+  }
 
   const lesson = await prisma.courseLesson.findUnique({
     where: {

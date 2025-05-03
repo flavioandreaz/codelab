@@ -1,5 +1,5 @@
 import { getCourseProgress } from "@/actions/course-progress";
-import { getCourse } from "@/actions/courses";
+import { getCourse, getPurchasedCourses } from "@/actions/courses";
 import { Skeleton } from "@/components/ui/skeleton";
 import { notFound, redirect } from "next/navigation";
 
@@ -14,7 +14,12 @@ export default async function CoursePage({ params }: CoursePageProps) {
 
   if (!course) return notFound();
 
-  // TODO: verificar se o usuário possui o curso
+  const purchasedCourses = await getPurchasedCourses();
+  const isPurchased = purchasedCourses.some(
+    (purchasedCourse) => purchasedCourse.id === course.id
+  );
+
+  if (!isPurchased) return redirect(`/courses/details/${slug}`);
 
   const { completedLessons } = await getCourseProgress(slug);
 
