@@ -6,6 +6,7 @@ import {
   createNotificationSchema,
   CreateNotificationSchema,
 } from "@/server/schemas/notifications";
+import { getUser } from "./user";
 
 export const sendNotifications = async (rawData: CreateNotificationSchema) => {
   const isAdmin = await checkRole("admin");
@@ -27,5 +28,30 @@ export const sendNotifications = async (rawData: CreateNotificationSchema) => {
       content: data.content,
       link: data.link,
     })),
+  });
+};
+
+export const getNotifications = async () => {
+  const { userId } = await getUser();
+
+  const notifications = await prisma.notification.findMany({
+    where: { userId },
+    orderBy: { createdAt: "desc" },
+  });
+
+  return notifications;
+};
+
+export const readAllNotifications = async () => {
+  const { userId } = await getUser();
+
+  await prisma.notification.updateMany({
+    where: {
+      userId,
+      readAt: null,
+    },
+    data: {
+      readAt: new Date(),
+    },
   });
 };
