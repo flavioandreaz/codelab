@@ -12,6 +12,7 @@
     "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.802.0",
     "@clerk/localizations": "^3.14.0",
     "@clerk/nextjs": "^6.18.0",
     "@hello-pangea/dnd": "^18.0.1",
