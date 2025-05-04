@@ -10,6 +10,7 @@ import { formatPrice, formatStatus } from "@/lib/utils";
 import { format } from "date-fns";
 import { Button } from "@/components/ui/button";
 import { Pencil, Send, Trash } from "lucide-react";
+import Link from "next/link";
 
 type CoursesTableProps = {
   courses: CourseWithTagsAndModules[];
@@ -102,7 +103,9 @@ export const CoursesTable = ({ courses }: CoursesTableProps) => {
     {
       header: "",
       accessorKey: "actions",
-      cell: () => {
+      cell: ({ row }) => {
+        const course = row.original;
+
         return (
           <div className="flex items-center gap-2 justify-end">
             <Tooltip content="Alterar status para Publicado">
@@ -111,9 +114,11 @@ export const CoursesTable = ({ courses }: CoursesTableProps) => {
               </Button>
             </Tooltip>
             <Tooltip content="Editar curso">
-              <Button variant="outline" size="icon">
-                <Pencil />
-              </Button>
+              <Link passHref href={`/admin/courses/edit/${course.id}`}>
+                <Button variant="outline" size="icon">
+                  <Pencil />
+                </Button>
+              </Link>
             </Tooltip>
             <Tooltip content="Excluir curso">
               <Button variant="outline" size="icon">
