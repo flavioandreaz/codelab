@@ -111,3 +111,40 @@ export const deleteComment = async (commentId: string) => {
     where: { id: commentId },
   });
 };
+
+export const getAdminComments = async (): Promise<AdminComment[]> => {
+  const isAdmin = await checkRole("admin");
+
+  if (!isAdmin) throw new Error("Unauthorized");
+
+  const comments = await prisma.lessonComment.findMany({
+    where: {
+      parentId: null,
+    },
+    include: {
+      user: true,
+      lesson: {
+        include: {
+          module: {
+            include: {
+              course: true,
+            },
+          },
+        },
+      },
+      _count: {
+        select: {
+          replies: true,
+        },
+      },
+    },
+    orderBy: {
+      createdAt: "desc",
+    },
+  });
+
+  return comments.map(({ _count, ...comment }) => ({
+    ...comment,
+    repliesCount: _count.replies,
+  }));
+};
