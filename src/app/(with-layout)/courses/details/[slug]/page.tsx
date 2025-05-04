@@ -16,12 +16,47 @@ import { notFound } from "next/navigation";
 import { format } from "date-fns";
 import { CourseProgress } from "@/components/pages/courses/course-details/course-progress";
 import { BackButton } from "@/components/ui/back-button";
+import { Metadata } from "next";
+import { prisma } from "@/lib/prisma";
 
 type CourseDetailsPageProps = {
   params: Promise<{
     slug: string;
   }>;
 };
+
+export async function generateMetadata({
+  params,
+}: CourseDetailsPageProps): Promise<Metadata> {
+  const { slug } = await params;
+
+  const { course } = await getCourse(slug);
+
+  if (!course)
+    return {
+      title: "Curso não encontrado",
+    };
+
+  return {
+    title: course.title,
+    description: course.shortDescription,
+    openGraph: {
+      images: [course.thumbnail],
+    },
+  };
+}
+
+export async function generateStaticParams() {
+  const courses = await prisma.course.findMany({
+    select: {
+      slug: true,
+    },
+  });
+
+  return courses.map((course) => ({
+    slug: course.slug,
+  }));
+}
 
 export default async function CourseDetailsPage({
   params,
