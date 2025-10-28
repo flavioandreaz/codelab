@@ -18,7 +18,7 @@ const VideoPlayer = ({ videoId, autoplay, onEnd }: VideoPlayerProps) => {
 
   return (
     <MediaPlayer
-      title="Vídeo da Aula"
+      title="Vídeo da Aula do Codelab"
       src={`youtube/${videoId}`}
       onEnd={onEnd}
       autoPlay={autoplay && userAlreadyInteracted}
