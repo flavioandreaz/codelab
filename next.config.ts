@@ -17,6 +17,12 @@ const nextConfig: NextConfig = {
     ],
   },
   async headers() {
+    const imgSrc = process.env.CLOUDFLARE_FILE_BASE_PATH && process.env.CLOUDFLARE_FILE_BASE_PATH.trim() !== ""
+      ? process.env.CLOUDFLARE_FILE_BASE_PATH
+      : "https://pub-268b707399424b6499871d81274dac46.r2.dev";
+    if (imgSrc === "https://pub-268b707399424b6499871d81274dac46.r2.dev") {
+      console.warn("[WARN] Usando valor fixo para CLOUDFLARE_FILE_BASE_PATH no CSP");
+    }
     return [
       {
         source: "/(.*)",
@@ -24,7 +30,7 @@ const nextConfig: NextConfig = {
           {
             key: "Content-Security-Policy",
             value:
-              "default-src 'self'; img-src 'self' data: https://pub-268b707399424b6499871d81274dac46.r2.dev;",
+              `default-src 'self'; img-src 'self' data: ${imgSrc};`,
           },
         ],
       },
