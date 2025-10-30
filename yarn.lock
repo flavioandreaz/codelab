@@ -1722,7 +1722,7 @@
   dependencies:
     "@floating-ui/utils" "^0.2.9"
 
-"@floating-ui/dom@^1.0.0", "@floating-ui/dom@^1.6.10":
+"@floating-ui/dom@^1.0.0":
   version "1.6.13"
   resolved "https://registry.yarnpkg.com/@floating-ui/dom/-/dom-1.6.13.tgz#a8a938532aea27a95121ec16e667a7cbe8c59e34"
   integrity sha512-umqzocjDgNRGTuO7Q8CU32dkHkECqI8ZdMZ5Swb6QAM0t5rnlrN3lGo1hdpscRd3WS8T6DKYK4ephgIH9iRh3w==
@@ -1945,6 +1945,11 @@
   dependencies:
     "@jridgewell/resolve-uri" "^3.1.0"
     "@jridgewell/sourcemap-codec" "^1.4.14"
+
+"@maverick-js/signals@^5.10.3":
+  version "5.11.5"
+  resolved "https://registry.yarnpkg.com/@maverick-js/signals/-/signals-5.11.5.tgz#747490ad174320236378d791600e6fadf2c3072b"
+  integrity sha512-/GO94awrwN9ROYZDMTeByordjvbhcm3CMvB/2aL/sEUy9Va8nM/2GmNgOOe+rrooTGnz8/DzO73xomuBRrnYWw==
 
 "@napi-rs/wasm-runtime@^0.2.8", "@napi-rs/wasm-runtime@^0.2.9":
   version "0.2.9"
@@ -3794,13 +3799,10 @@
   resolved "https://registry.yarnpkg.com/@unrs/resolver-binding-win32-x64-msvc/-/resolver-binding-win32-x64-msvc-1.7.1.tgz#552fd39d041b400d468badbd829e999550bc0c1e"
   integrity sha512-isaSSX0p2m4Fe9gjJZi+ga6yeRhej237QiC0vQVawsA1Xmr3updYoEEpB4F0LNVjmLUiLqxfmh8f68eGThYqtg==
 
-"@vidstack/react@^1.12.13":
-  version "1.12.13"
-  resolved "https://registry.yarnpkg.com/@vidstack/react/-/react-1.12.13.tgz#db7d27db4a20ad21fd2acfd3f68b200ae098d010"
-  integrity sha512-zyNydy1+HtoK6cJ8EmqFNkPPGHIFMrr2KH+ef3654EqXx4IcJ8A5LCNMXBuALQE8IMxtk040JMoR9OKyeXjBOQ==
-  dependencies:
-    "@floating-ui/dom" "^1.6.10"
-    media-captions "^1.0.4"
+"@vidstack/react@^0.6.15":
+  version "0.6.15"
+  resolved "https://registry.yarnpkg.com/@vidstack/react/-/react-0.6.15.tgz#04ed8b01a31ecc45c6752aaa05251b01fc54c7da"
+  integrity sha512-S8KkYCte84Pqwb8Zd9vuOCe2YuaXqRdtYQ22zSvDUPlS7m8ilYs6ypfHwZzmgSVZdayVU1C703aFMSdcLfpxpg==
 
 acorn-jsx@^5.3.2:
   version "5.3.2"
@@ -5779,6 +5781,14 @@ math-intrinsics@^1.1.0:
   resolved "https://registry.yarnpkg.com/math-intrinsics/-/math-intrinsics-1.1.0.tgz#a0dd74be81e2aa5c2f27e65ce283605ee4e2b7f9"
   integrity sha512-/IXtbwEk5HTPyEwyKX6hGkYXxM9nbj64B+ilVJnC/R6B0pH5G4V3b0pVbL7DBj4tkhBAppbQUlf6F6Xl9LHu1g==
 
+maverick.js@0.37.0:
+  version "0.37.0"
+  resolved "https://registry.yarnpkg.com/maverick.js/-/maverick.js-0.37.0.tgz#3dc371786540ba5cc327179a268b60c165a317d8"
+  integrity sha512-1Dk/9rienLiihlktVvH04ADC2UJTMflC1fOMVQCCaQAaz7hgzDI5i0p/arFbDM52hFFiIcq4RdXtYz47SgsLgw==
+  dependencies:
+    "@maverick-js/signals" "^5.10.3"
+    type-fest "^3.8.0"
+
 mdn-data@2.0.28:
   version "2.0.28"
   resolved "https://registry.yarnpkg.com/mdn-data/-/mdn-data-2.0.28.tgz#5ec48e7bef120654539069e1ae4ddc81ca490eba"
@@ -5794,10 +5804,10 @@ mdurl@^2.0.0:
   resolved "https://registry.yarnpkg.com/mdurl/-/mdurl-2.0.0.tgz#80676ec0433025dd3e17ee983d0fe8de5a2237e0"
   integrity sha512-Lf+9+2r+Tdp5wXDXC4PcIBjTDtq4UKjCPMQhKIuzpJNW0b96kVqSwW0bT7FhRSfmAiFYgP+SCRvdrDozfh0U5w==
 
-media-captions@^1.0.4:
-  version "1.0.4"
-  resolved "https://registry.yarnpkg.com/media-captions/-/media-captions-1.0.4.tgz#aaacb6a554f7549fc7308b6b7cf766686cf42fad"
-  integrity sha512-cyDNmuZvvO4H27rcBq2Eudxo9IZRDCOX/I7VEyqbxsEiD2Ei7UYUhG/Sc5fvMZjmathgz3fEK7iAKqvpY+Ux1w==
+media-captions@0.0.18:
+  version "0.0.18"
+  resolved "https://registry.yarnpkg.com/media-captions/-/media-captions-0.0.18.tgz#ad2de78b06d6d222407057279a1595f8b0408a7e"
+  integrity sha512-JW18P6FuHdyLSGwC4TQ0kF3WdNj/+wMw2cKOb8BnmY6vSJGtnwJ+vkYj+IjHOV34j3XMc70HDeB/QYKR7E7fuQ==
 
 merge2@^1.3.0:
   version "1.4.1"
@@ -7054,6 +7064,11 @@ type-check@^0.4.0, type-check@~0.4.0:
   dependencies:
     prelude-ls "^1.2.1"
 
+type-fest@^3.8.0:
+  version "3.13.1"
+  resolved "https://registry.yarnpkg.com/type-fest/-/type-fest-3.13.1.tgz#bb744c1f0678bea7543a2d1ec24e83e68e8c8706"
+  integrity sha512-tLq3bSNx+xSpwvAJnzrK0Ep5CLNWjvFTOp71URMaAEWBfRb9nnJiBoUe0tF8bI4ZFO3omgBR6NvnbzVUT3Ly4g==
+
 type-fest@^4.15.0:
   version "4.40.1"
   resolved "https://registry.yarnpkg.com/type-fest/-/type-fest-4.40.1.tgz#d78a09f08dd1081a434dd377967650cfd565401d"
@@ -7254,6 +7269,15 @@ victory-vendor@^36.6.8:
     d3-shape "^3.1.0"
     d3-time "^3.0.0"
     d3-timer "^3.0.1"
+
+vidstack@0.6.15:
+  version "0.6.15"
+  resolved "https://registry.yarnpkg.com/vidstack/-/vidstack-0.6.15.tgz#478ce7f6f93615002e4ef10e70eec42078578437"
+  integrity sha512-pI2aixBuOpu/LSnRgNJ40tU/KFW+x1X+O2bW1hz946ZZShDM5oqRXF9pavDOuckHAHPgUN9HYUr9vUNTBUPF1Q==
+  dependencies:
+    maverick.js "0.37.0"
+    media-captions "0.0.18"
+    type-fest "^3.8.0"
 
 w3c-keyname@^2.2.0:
   version "2.2.8"

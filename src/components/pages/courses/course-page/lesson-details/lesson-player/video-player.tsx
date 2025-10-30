@@ -1,11 +1,7 @@
 import "@vidstack/react/player/styles/base.css";
 import "@vidstack/react/player/styles/plyr/theme.css";
 
-import { MediaPlayer, MediaProvider } from "@vidstack/react";
-import {
-  PlyrLayout,
-  plyrLayoutIcons,
-} from "@vidstack/react/player/layouts/plyr";
+import { MediaPlayer } from "@vidstack/react";
 
 type VideoPlayerProps = {
   videoId: string;
@@ -18,14 +14,12 @@ const VideoPlayer = ({ videoId, autoplay, onEnd }: VideoPlayerProps) => {
 
   return (
     <MediaPlayer
-      title="Vídeo da Aula do Codelab"
+      title="Vídeo da Aula"
       src={`youtube/${videoId}`}
       onEnd={onEnd}
       autoPlay={autoplay && userAlreadyInteracted}
-    >
-      <MediaProvider />
-      <PlyrLayout icons={plyrLayoutIcons} />
-    </MediaPlayer>
+      controls
+    />
   );
 };
 
