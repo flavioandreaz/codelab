@@ -8,6 +8,20 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  async headers() {
+    return [
+      {
+        source: "/(.*)",
+        headers: [
+          {
+            key: "Content-Security-Policy",
+            value:
+              "default-src 'self'; img-src 'self' data: https://pub-268b707399424b6499871d81274dac46.r2.dev;",
+          },
+        ],
+      },
+    ];
+  },
   turbopack: {
     rules: {
       "*.svg": {
