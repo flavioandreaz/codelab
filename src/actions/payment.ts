@@ -100,8 +100,11 @@ export const createPixCheckout = async (payload: PixCheckoutSchema) => {
     value: price,
     dueDate: new Date().toISOString().split("T")[0],
     description: `Compra do curso "${course.title}"`,
-    externalReference: courseId,
+    externalReference: course.id,
   };
+
+  // Log do valor enviado em externalReference
+  console.log("Enviando externalReference para Asaas:", course.id);
 
   const { data } = await asaasApi.post("/payments", paymentPayload);
 

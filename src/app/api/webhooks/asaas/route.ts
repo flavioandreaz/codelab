@@ -30,6 +30,9 @@ export const POST = async (req: Request) => {
     const customerId = payment.customer;
     const courseId = payment.externalReference;
 
+  // Log do courseId recebido para debug
+  console.log("courseId recebido:", courseId);
+
     // Validação: garantir que o courseId existe na tabela de cursos
     const curso = await prisma.course.findUnique({ where: { id: courseId } });
     if (!curso) {
