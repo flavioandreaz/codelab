@@ -30,6 +30,13 @@ export const POST = async (req: Request) => {
     const customerId = payment.customer;
     const courseId = payment.externalReference;
 
+    // Validação: garantir que o courseId existe na tabela de cursos
+    const curso = await prisma.course.findUnique({ where: { id: courseId } });
+    if (!curso) {
+      console.log("Curso não encontrado para courseId:", courseId);
+      return new Response("Course not found", { status: 404 });
+    }
+
     const user = await prisma.user.findFirst({
       where: {
         asaasId: customerId,
